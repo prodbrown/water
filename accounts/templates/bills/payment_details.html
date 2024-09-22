@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Details{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2 class="text-center text-primary">Payment Details</h2>
+
+        <!-- Bill Information -->
+        <div class="card mb-4 shadow-lg">
+            <div class="card-header bg-info text-white">
+                <h4>Bill for <span class="text-warning">{{ bill.customer }}</span> - 
+                    <span class="text-success">{{ bill.month }} {{ bill.year }}</span>
+                </h4>
+            </div>
+            <div class="card-body bg-light">
+                <p><strong class="text-danger">Total Amount:</strong> 
+                    <span class="text-primary">{{ bill.total_amount }} Tsh</span>
+                </p>
+                <p><strong class="text-info">Units Used:</strong> 
+                    <span class="text-orange">{{ bill.units_used }} units</span>
+                </p>
+                <p><strong class="text-dark">Payment Status:</strong>
+                    <span class="badge 
+                        {% if bill.status == 'PAID' %}badge-success{% elif bill.status == 'PENDING' %}badge-warning{% else %}badge-danger{% endif %}">
+                        {{ bill.status }}
+                    </span>
+                </p>
+                <p><strong class="text-danger">Payment Number:</strong> 
+                    <span class="text-info">0{{ bill.control_number }}</span>
+                </p>
+
+                <!-- Display verification message and screenshot even if the bill is approved -->
+                {% if bill.payment_verification_message %}
+                    <p><strong class="text-muted">Verification Message:</strong> 
+                        <span class="text-primary">{{ bill.payment_verification_message }}</span>
+                    </p>
+                {% endif %}
+                
+                {% if bill.payment_verification_screenshot %}
+                    <p><strong class="text-dark">Payment Screenshot:</strong></p>
+                    <img src="{{ bill.payment_verification_screenshot.url }}" alt="Payment Screenshot" class="img-thumbnail shadow">
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Payment Information -->
+        {% if payment %}
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-warning text-dark">
+                <h5>Payment Information</h5>
+            </div>
+            <div class="card-body bg-light">
+                <p><strong class="text-success">Paid Amount:</strong> 
+                    <span class="text-primary">{{ payment.paid_amount }} Tsh</span>
+                </p>
+            </div>
+        </div>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                <strong class="text-danger">Note:</strong> Payment has not been verified yet.
+            </div>
+        {% endif %}
+
+        <!-- Back Button -->
+        <div class="text-center">
+            <a href="{% url 'view_bills' %}" class="btn btn-secondary mt-3 shadow">Back to Bills</a>
+        </div>
+    </div>
+{% endblock %}

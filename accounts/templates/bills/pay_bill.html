@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Pay Bill{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Pay Bill</h2>
+        <h4>Bill for {{ bill.month }} {{ bill.year }}</h4>
+        <p>Payment number: 0{{ bill.control_number }}</p>
+        <p>Total Amount: {{ bill.total_amount }}</p>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="verification_message">Verification Message</label>
+                <textarea id="verification_message" name="verification_message" class="form-control" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="screenshot">Upload Payment Screenshot</label>
+                <input type="file" id="screenshot" name="screenshot" class="form-control" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Payment</button>
+        </form>
+    </div>
+{% endblock %}

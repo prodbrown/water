@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}List of Users{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2 class="text-center">Users</h2>
+        
+        <!-- Search Form -->
+        <form method="GET" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search by email...">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Download Button -->
+        <div class="mb-3">
+            <a href="{% url 'download_users' %}" class="btn btn-info">Download Users</a>
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>S/N</th>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.first_name }} {{ user.last_name }}</td>
+                        <td>
+                            {% if user.is_serviceprovider %}
+                                <span class="badge badge-success">Service Provider</span>
+                            {% else %}
+                                <span class="badge badge-info">Customer</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if user.is_serviceprovider %}
+                                <a href="{% url 'promote_user' user.id %}" class="btn btn-warning btn-sm">Demote to Customer</a>
+                            {% else %}
+                                <a href="{% url 'promote_user' user.id %}" class="btn btn-success btn-sm">Promote to Service Provider</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No users available</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

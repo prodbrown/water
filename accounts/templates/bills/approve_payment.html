@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Approve or Reject Payment{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Approve or Reject Payment</h2>
+        <h4>Bill for {{ bill.customer}} - {{ bill.month }} {{ bill.year }}</h4>
+        <p>Total Amount: {{ bill.total_amount }}</p>
+        <p>Payment Status: {{ bill.status }}</p>
+        
+        <!-- Always show the verification message and screenshot if they exist, regardless of the payment status -->
+        {% if bill.payment_verification_message %}
+            <p>Verification Message: {{ bill.payment_verification_message }}</p>
+        {% endif %}
+        
+        {% if bill.payment_verification_screenshot %}
+            <img src="{{ bill.payment_verification_screenshot.url }}" alt="Screenshot" class="img-thumbnail">
+        {% endif %}
+        
+        <!-- Approve Payment Form -->
+        {% if bill.status == 'PENDING' %}
+            <form method="POST" action="{% url 'approve_payment' bill.id %}">
+                {% csrf_token %}
+                <br>
+                <button type="submit" class="btn btn-primary">Approve Payment</button>
+            </form>
+        {% endif %}
+        
+        <!-- Reject Bill Form -->
+        {% if bill.status != 'PAID' %}
+            <form method="POST" action="{% url 'reject_bill' bill.id %}">
+                {% csrf_token %}
+                <br>
+                <button type="submit" class="btn btn-danger">Reject Bill</button>
+            </form>
+        {% endif %}
+        
+    </div>
+{% endblock %}

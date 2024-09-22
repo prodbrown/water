@@ -1,0 +1,12 @@
+<!-- templates/error.html -->
+{% extends 'base.html' %}
+
+{% block title %}Error Occurred{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2 class="text-danger">An Error Occurred</h2>
+        <p>{{ error_message }}</p>
+        <a href="{% url 'dashboard' %}" class="btn btn-primary">Return to Dashboard</a>
+    </div>
+{% endblock %}

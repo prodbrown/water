@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Card with warning visuals -->
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white text-center">
+                    <h4>Warning: Rejecting Bill</h4>
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">Reject Bill for {{ bill.customer }} - {{ bill.month }} {{ bill.year }}</h5>
+                    <p class="card-text text-danger">
+                        <strong>Are you sure you want to reject this bill?</strong><br>
+                        <em>This action cannot be undone and will mark the bill as "REJECTED".</em>
+                    </p>
+                    <p class="text-muted">
+                        Once rejected, the customer will be notified and the payment process will be canceled. Proceed with caution.
+                    </p>
+                    
+                    <!-- Warning Icon (optional) -->
+                    <div class="my-4">
+                        <i class="fas fa-exclamation-triangle fa-4x text-danger"></i>
+                    </div>
+
+                    <!-- Confirmation buttons -->
+                    <form method="POST" class="d-inline-block">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-lg">
+                            Yes, Reject Bill
+                        </button>
+                    </form>
+                    <a href="{% url 'view_all_bills' %}" class="btn btn-secondary btn-lg ml-3">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

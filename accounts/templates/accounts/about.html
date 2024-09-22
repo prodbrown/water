@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+    <div class="text-center mb-4">
+        <h2 style="color: #007bff;">About Us</h2>
+        <p style="color: #6c757d;">Welcome to our Water Supply Service! We are dedicated to providing reliable and efficient water supply solutions to our community.</p>
+    </div>
+    
+    <div class="card mb-3" style="border: 1px solid #007bff;">
+        <div class="card-body">
+            <h3 class="card-title" style="color: #007bff;">Our Mission</h3>
+            <p style="color: #495057;">To deliver clean, safe, and affordable water to every household, ensuring the health and well-being of our community.</p>
+        </div>
+    </div>
+
+    <div class="card mb-3" style="border: 1px solid #28a745;">
+        <div class="card-body">
+            <h3 class="card-title" style="color: #28a745;">Our Values</h3>
+            <ul style="color: #495057;">
+                <li><strong>Quality:</strong> We prioritize the quality of our water supply.</li>
+                <li><strong>Reliability:</strong> Count on us for timely and consistent service.</li>
+                <li><strong>Community:</strong> We care about our community and its needs.</li>
+                <li><strong>Innovation:</strong> We embrace modern technology for better service.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3" style="border: 1px solid #ffc107;">
+        <div class="card-body">
+            <h3 class="card-title" style="color: #ffc107;">Timely Services</h3>
+            <p style="color: #495057;">Our team is committed to ensuring prompt water delivery. We understand the importance of having water available when you need it. Our efficient systems and dedicated staff guarantee that our services are timely and dependable.</p>
+        </div>
+    </div>
+
+    <div class="card mb-3" style="border: 1px solid #17a2b8;">
+        <div class="card-body">
+            <h3 class="card-title" style="color: #17a2b8;">Why Choose Us?</h3>
+            <p style="color: #495057;">We provide:</p>
+            <ul style="color: #495057;">
+                <li>24/7 Customer Support</li>
+                <li>Flexible Payment Options</li>
+                <li>Regular Maintenance Checks</li>
+                <li>Transparent Billing Practices</li>
+            </ul>
+            <p>Join us in enjoying uninterrupted water supply services!</p>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'contact' %}" class="btn btn-primary" style="background-color: #007bff; border: none;">Contact Us for More Information</a>
+    </div>
+{% endblock %}

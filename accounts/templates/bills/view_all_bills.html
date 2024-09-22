@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}All Bills{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <!-- Page Title with Download Button -->
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>All Bills</h2>
+            <a href="{% url 'download_bills_csv' %}" class="btn btn-success">Download Bills</a>
+        </div>
+
+        <!-- Filter Bills by Status -->
+        <form method="GET" class="form-inline justify-content-center mb-3">
+            <label for="status" class="mr-2">Filter by Status:</label>
+            <select name="status" id="status" class="form-control">
+                <option value="">All</option>
+                <option value="PAID" {% if status_filter == 'PAID' %}selected{% endif %}>Paid</option>
+                <option value="PENDING" {% if status_filter == 'PENDING' %}selected{% endif %}>Pending</option>
+                <option value="NOT PAID" {% if status_filter == 'NOT PAID' %}selected{% endif %}>Not Paid</option>
+                <option value="REJECTED" {% if status_filter == 'REJECTED' %}selected{% endif %}>Rejected</option>
+            </select>
+            <button type="submit" class="btn btn-primary ml-2">Filter</button>
+        </form>
+
+
+
+        <!-- Bills Table -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped text-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th>S/N</th>
+                        <th>Customer</th>
+                        <th>Month</th>
+                        <th>Year</th>
+                        <th>Units Used</th>
+                        <th>Total Amount</th>
+                        <th>Payment Number</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bill in bills %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td> <!-- Serial Number -->
+                            <td><a href="{% url 'payment_details' bill.id %}">{{ bill.customer.email }}</a></td>
+                            <td>{{ bill.month }}</td>
+                            <td>{{ bill.year }}</td>
+                            <td>{{ bill.units_used }}</td>
+                            <td>{{ bill.total_amount }} Tsh</td>
+                            <td>0{{ bill.control_number }}</td>
+                            <td class="{% if bill.status == 'PAID' %}text-success{% elif bill.status == 'PENDING' %}text-warning{% elif bill.status == 'REJECTED' %}text-dark{% else %}text-danger{% endif %}">
+                                {{ bill.status }}
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group" aria-label="Action Buttons">
+                                    {% if bill.status == 'PENDING' %}
+                                        <a href="{% url 'approve_payment' bill.id %}" class="btn btn-success btn-sm">Approve</a>
+                                        <a href="{% url 'reject_bill' bill.id %}" class="btn btn-danger btn-sm">Reject</a>
+                                    {% else %}
+                                        <span class="btn btn-secondary btn-sm disabled">No Action</span>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

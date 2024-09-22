@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}My Bills{% endblock %}
+
+{% block content %}
+
+        <h2 class="text-center mb-4">Your Bills</h2>
+
+        <!-- Bill Status Filter -->
+        <form method="GET" class="form-inline justify-content-center mb-4">
+            <label for="status" class="mr-2">Filter by Status:</label>
+            <select name="status" id="status" class="custom-select w-25">
+                <option value="">All Bills</option>
+                <option value="PAID" {% if request.GET.status == 'PAID' %}selected{% endif %}>Paid</option>
+                <option value="NOT PAID" {% if request.GET.status == 'NOT PAID' %}selected{% endif %}>Not Paid</option>
+                <option value="PENDING" {% if request.GET.status == 'PENDING' %}selected{% endif %}>Pending</option>
+                <option value="REJECTED" {% if request.GET.status == 'REJECTED' %}selected{% endif %}>Rejected</option>
+            </select>
+            <button type="submit" class="btn btn-primary ml-3">Filter</button>
+        </form>
+
+        <!-- Bills Table -->
+        <div class="table-responsive-lg shadow-lg rounded-lg">
+            <table class="table table-hover text-center align-middle">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th>S/N</th>
+                        <th>Month</th>
+                        <th>Year</th>
+                        <th>Units Used</th>
+                        <th>Total Amount (Tsh)</th>
+                        <th>Payment Number</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bill in bills %}
+                        <tr class="bg-light">
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ bill.month }}</td>
+                            <td>{{ bill.year }}</td>
+                            <td>{{ bill.units_used }}</td>
+                            <td>{{ bill.total_amount | floatformat:2 }}</td>
+                            <td><a href="{% url 'payment_details' bill.id %}" class="text-info">0{{ bill.control_number }}</a></td>
+                            <td>
+                                <span class="badge badge-pill 
+                                    {% if bill.status == 'PAID' %}badge-success{% 
+                                    elif bill.status == 'PENDING' %}badge-warning{% 
+                                    elif bill.status == 'REJECTED' %}badge-dark{% 
+                                    else %}badge-danger{% endif %}">
+                                    {{ bill.status }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if bill.status == 'NOT PAID' %}
+                                    <a href="{% url 'pay_bill' bill.id %}" class="btn btn-sm btn-warning">Pay</a>
+                                {% elif bill.status == 'REJECTED' %}
+                                    <span class="badge badge-dark">Rejected</span>
+                                {% else %}
+                                    <span class="badge badge-secondary">No Action</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center text-muted">No bills available</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+<style>
+        .table thead th {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.table {
+    border: none;
+    margin-top: 20px;
+}
+
+.table td, .table th {
+    padding: 15px;
+}
+
+@media (max-width: 768px) {
+    .table-responsive-lg {
+        overflow-x: scroll;
+    }
+
+    .form-inline {
+        flex-direction: column;
+    }
+}
+
+</style>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card border" style="background-color: #f8f9fa;">
+                    <div class="card-header bg-primary text-white">
+                        <h3>Welcome to Your Dashboard</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5>Hello, <strong>{{ request.user }}</strong></h5>
+                        <p class="lead">
+                            {% if request.user.is_customer %}
+                                Welcome, Valued customer! <i class="fas fa-user"></i>
+                            {% elif request.user.is_serviceprovider %}
+                                Welcome, Service provider! <i class="fas fa-tools"></i>
+                            {% endif %}
+                        </p>
+
+                        <!-- Show actions based on user role -->
+                        {% if request.user.is_customer %}
+                            <div class="alert alert-info">
+                                <p>You can view and pay your bills here:</p>
+                                <a href="{% url 'view_bills' %}" class="btn btn-primary btn-sm">View Bills</a>
+                            </div>
+                        {% elif request.user.is_serviceprovider %}
+                            <div class="alert alert-success">
+                                <p>You can create bills for your customers:</p>
+                                <a href="{% url 'create_bill' %}" class="btn btn-success btn-sm">Create Bill</a>
+                            </div>
+                            <div class="alert alert-info">
+                                <p>View all bills:</p>
+                                <a href="{% url 'view_all_bills' %}" class="btn btn-primary btn-sm">View Bills</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer text-right">
+                        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            margin-top: 20px;
+            box-shadow: none; /* Removes the shadow */
+        }
+        .card-header {
+            padding: 15px;
+            border-bottom: 1px solid #e3e6f0;
+        }
+        .lead {
+            font-size: 1.1rem;
+            color: #6c757d;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .card-footer {
+            border-top: 1px solid #e3e6f0;
+            background-color: #f8f9fa;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid transparent;
+            border-radius: .25rem;
+        }
+        .alert-info {
+            background-color: #e9ecef;
+            color: #0c5460;
+            border-color: #c8d6e5;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+    </style>
+{% endblock %}
